@@ -1,0 +1,457 @@
+{
+ "FOOTBALL": [
+  "/img/football-0.jpg",
+  "/img/football-1.jpg",
+  "/img/football-2.jpg"
+ ],
+ "SWIMMING": [
+  "/img/swimming-0.jpg",
+  "/img/swimming-1.jpg",
+  "/img/swimming-2.jpg"
+ ],
+ "BASKETBALL": [
+  "/img/basketball-0.jpg",
+  "/img/basketball-1.jpg",
+  "/img/basketball-2.jpg"
+ ],
+ "VOLLEYBALL": [
+  "/img/volleyball-0.jpg",
+  "/img/volleyball-1.jpg",
+  "/img/volleyball-2.jpg"
+ ],
+ "TENNIS": [
+  "/img/tennis-0.jpg",
+  "/img/tennis-1.jpg",
+  "/img/tennis-2.jpg"
+ ],
+ "MARTIAL_ARTS": [
+  "/img/martial_arts-0.jpg",
+  "/img/martial_arts-1.jpg",
+  "/img/martial_arts-2.jpg"
+ ],
+ "GYMNASTICS": [
+  "/img/gymnastics-0.jpg",
+  "/img/gymnastics-1.jpg",
+  "/img/gymnastics-2.jpg"
+ ],
+ "DANCE": [
+  "/img/dance-0.jpg",
+  "/img/dance-1.jpg",
+  "/img/dance-2.jpg"
+ ],
+ "MUSIC": [
+  "/img/music-0.jpg",
+  "/img/music-1.jpg",
+  "/img/music-2.jpg"
+ ],
+ "ART": [
+  "/img/art-0.jpg",
+  "/img/art-1.jpg",
+  "/img/art-2.jpg"
+ ],
+ "CHESS": [
+  "/img/chess-0.jpg",
+  "/img/chess-1.jpg",
+  "/img/chess-2.jpg"
+ ],
+ "LANGUAGES": [
+  "/img/languages-0.jpg",
+  "/img/languages-1.jpg",
+  "/img/languages-2.jpg"
+ ],
+ "ROBOTICS": [
+  "/img/robotics-0.jpg",
+  "/img/robotics-1.jpg",
+  "/img/robotics-2.jpg"
+ ],
+ "SKATING": [
+  "/img/skating-0.jpg",
+  "/img/skating-1.jpg",
+  "/img/skating-2.jpg"
+ ],
+ "HORSE_RIDING": [
+  "/img/horse_riding-0.jpg",
+  "/img/horse_riding-1.jpg",
+  "/img/horse_riding-2.jpg"
+ ],
+ "ATHLETICS": [
+  "/img/athletics-0.jpg",
+  "/img/athletics-1.jpg",
+  "/img/athletics-2.jpg"
+ ],
+ "OTHER": [
+  "/img/other-0.jpg",
+  "/img/other-1.jpg",
+  "/img/other-2.jpg"
+ ],
+ "warszaw-szachtar-pro-school": [
+  "/img/p-d32750dfee-0.jpg",
+  "/img/p-d32750dfee-1.jpg",
+  "/img/p-d32750dfee-2.jpg",
+  "/img/p-d32750dfee-3.jpg",
+  "/img/p-d32750dfee-4.jpg"
+ ],
+ "crocodile-swimming-school": [
+  "/img/p-041e330b31-0.jpg",
+  "/img/p-041e330b31-1.jpg",
+  "/img/p-041e330b31-2.jpg",
+  "/img/p-041e330b31-3.jpg",
+  "/img/p-041e330b31-4.jpg"
+ ],
+ "bungee-jumping-mario-3851": [
+  "/img/p-cef92605d3-0.jpg",
+  "/img/p-cef92605d3-1.jpg",
+  "/img/p-cef92605d3-2.jpg",
+  "/img/p-cef92605d3-3.jpg"
+ ],
+ "hulakula-rozrywkowe-centrum-miasta-7783": [
+  "/img/p-5fae0b738b-0.jpg",
+  "/img/p-5fae0b738b-1.jpg",
+  "/img/p-5fae0b738b-2.jpg",
+  "/img/p-5fae0b738b-3.jpg",
+  "/img/p-5fae0b738b-4.jpg"
+ ],
+ "wgore-1973": [
+  "/img/p-40981b2708-0.jpg",
+  "/img/p-40981b2708-1.jpg",
+  "/img/p-40981b2708-2.jpg"
+ ],
+ "147-break-2445": [
+  "/img/p-e73fb6bae1-0.jpg",
+  "/img/p-e73fb6bae1-1.jpg",
+  "/img/p-e73fb6bae1-2.jpg"
+ ],
+ "nastula-club-2785": [
+  "/img/p-9211251592-0.jpg",
+  "/img/p-9211251592-1.jpg",
+  "/img/p-9211251592-2.jpg",
+  "/img/p-9211251592-3.jpg",
+  "/img/p-9211251592-4.jpg"
+ ],
+ "i-love-fitness-3017": [
+  "/img/p-d8df98512e-0.jpg",
+  "/img/p-d8df98512e-1.jpg",
+  "/img/p-d8df98512e-2.jpg",
+  "/img/p-d8df98512e-3.jpg"
+ ],
+ "akademia-walki-3262": [
+  "/img/p-9f763c37c1-0.jpg",
+  "/img/p-9f763c37c1-1.jpg",
+  "/img/p-9f763c37c1-2.jpg",
+  "/img/p-9f763c37c1-3.jpg",
+  "/img/p-9f763c37c1-4.jpg"
+ ],
+ "cassiopeia-art-pl-3488": [
+  "/img/p-e3ee6a45f3-0.jpg",
+  "/img/p-e3ee6a45f3-1.jpg",
+  "/img/p-e3ee6a45f3-2.jpg",
+  "/img/p-e3ee6a45f3-3.jpg",
+  "/img/p-e3ee6a45f3-4.jpg"
+ ],
+ "centrum-wspinaczkowe-on-sight-3584": [
+  "/img/p-339a6f59d3-0.jpg",
+  "/img/p-339a6f59d3-1.jpg",
+  "/img/p-339a6f59d3-2.jpg",
+  "/img/p-339a6f59d3-3.jpg"
+ ],
+ "murall-centrum-wspinaczkowe-4216": [
+  "/img/p-47132bde2c-0.jpg",
+  "/img/p-47132bde2c-1.jpg",
+  "/img/p-47132bde2c-2.jpg",
+  "/img/p-47132bde2c-3.jpg"
+ ],
+ "makak-arena-wspinaczkowa-4217": [
+  "/img/p-913fc731be-0.jpg",
+  "/img/p-913fc731be-1.jpg",
+  "/img/p-913fc731be-2.jpg"
+ ],
+ "crux-boulder-4222": [
+  "/img/p-26507c35ad-0.jpg",
+  "/img/p-26507c35ad-1.jpg",
+  "/img/p-26507c35ad-2.jpg",
+  "/img/p-26507c35ad-3.jpg",
+  "/img/p-26507c35ad-4.jpg"
+ ],
+ "2wieze-4343": [
+  "/img/p-4f479be809-0.jpg",
+  "/img/p-4f479be809-1.jpg",
+  "/img/p-4f479be809-2.jpg",
+  "/img/p-4f479be809-3.jpg"
+ ],
+ "squash-city-4689": [
+  "/img/p-fc4c65a0e5-0.jpg",
+  "/img/p-fc4c65a0e5-1.jpg",
+  "/img/p-fc4c65a0e5-2.jpg"
+ ],
+ "billboard-4945": [
+  "/img/p-836a666f64-0.jpg",
+  "/img/p-836a666f64-1.jpg",
+  "/img/p-836a666f64-2.jpg",
+  "/img/p-836a666f64-3.jpg"
+ ],
+ "wysokosciowka-org-7528": [
+  "/img/p-66bf20ae7c-0.jpg",
+  "/img/p-66bf20ae7c-1.jpg",
+  "/img/p-66bf20ae7c-2.jpg",
+  "/img/p-66bf20ae7c-3.jpg"
+ ],
+ "centrum-futbolu-warszawianka-7835": [
+  "/img/p-fe2675ce0d-0.jpg",
+  "/img/p-fe2675ce0d-1.jpg",
+  "/img/p-fe2675ce0d-2.jpg"
+ ],
+ "towarzystwo-krzewienia-kultury-fizycznej-ognisko-wierzbno-7873": [
+  "/img/p-6dae725b92-0.jpg",
+  "/img/p-6dae725b92-1.jpg",
+  "/img/p-6dae725b92-2.jpg",
+  "/img/p-6dae725b92-3.jpg",
+  "/img/p-6dae725b92-4.jpg"
+ ],
+ "obiekto-8561": [
+  "/img/p-ebbe9b3401-0.jpg",
+  "/img/p-ebbe9b3401-1.jpg",
+  "/img/p-ebbe9b3401-2.jpg",
+  "/img/p-ebbe9b3401-3.jpg"
+ ],
+ "volt-boulderownia-8578": [
+  "/img/p-5ca1e0e581-0.jpg",
+  "/img/p-5ca1e0e581-1.jpg",
+  "/img/p-5ca1e0e581-2.jpg"
+ ],
+ "the-little-gym-8901": [
+  "/img/p-104f346c75-0.jpg",
+  "/img/p-104f346c75-1.jpg",
+  "/img/p-104f346c75-2.jpg",
+  "/img/p-104f346c75-3.jpg"
+ ],
+ "kahuna-squash-badminton-8922": [
+  "/img/p-4de86a1952-0.jpg",
+  "/img/p-4de86a1952-1.jpg",
+  "/img/p-4de86a1952-2.jpg"
+ ],
+ "murall-krakowska-9718": [
+  "/img/p-5568fed1ba-0.jpg",
+  "/img/p-5568fed1ba-1.jpg",
+  "/img/p-5568fed1ba-2.jpg"
+ ],
+ "ks-amator-9988": [
+  "/img/p-a6491cb59b-0.jpg",
+  "/img/p-a6491cb59b-1.jpg",
+  "/img/p-a6491cb59b-2.jpg",
+  "/img/p-a6491cb59b-3.jpg"
+ ],
+ "sports-base-warsaw-9993": [
+  "/img/p-a457e2f8bd-0.jpg",
+  "/img/p-a457e2f8bd-1.jpg",
+  "/img/p-a457e2f8bd-2.jpg",
+  "/img/p-a457e2f8bd-3.jpg"
+ ],
+ "a1karting-1103": [
+  "/img/p-3610020ea6-0.jpg",
+  "/img/p-3610020ea6-1.jpg",
+  "/img/p-3610020ea6-2.jpg",
+  "/img/p-3610020ea6-3.jpg"
+ ],
+ "bema-60-1110": [
+  "/img/p-20537e67ca-0.jpg",
+  "/img/p-20537e67ca-1.jpg",
+  "/img/p-20537e67ca-2.jpg"
+ ],
+ "miedzyszkolny-osrodek-sportowy-nr-1-agrykola-1111": [
+  "/img/p-bf3d5cc3b4-0.jpg",
+  "/img/p-bf3d5cc3b4-1.jpg",
+  "/img/p-bf3d5cc3b4-2.jpg",
+  "/img/p-bf3d5cc3b4-3.jpg",
+  "/img/p-bf3d5cc3b4-4.jpg"
+ ],
+ "strzelnica-warszawianka-1112": [
+  "/img/p-0488cc6ebc-0.jpg",
+  "/img/p-0488cc6ebc-1.jpg",
+  "/img/p-0488cc6ebc-2.jpg",
+  "/img/p-0488cc6ebc-3.jpg"
+ ],
+ "miedzyszkolny-osrodek-sportowy-nr-7-1116": [
+  "/img/p-9da74f2c2b-0.jpg",
+  "/img/p-9da74f2c2b-1.jpg",
+  "/img/p-9da74f2c2b-2.jpg",
+  "/img/p-9da74f2c2b-3.jpg",
+  "/img/p-9da74f2c2b-4.jpg"
+ ],
+ "figielec-dance-studio-4394": [
+  "/img/p-90bc3dfcd5-0.jpg",
+  "/img/p-90bc3dfcd5-1.jpg",
+  "/img/p-90bc3dfcd5-2.jpg"
+ ],
+ "solo-dance-centrum-tanca-8159": [
+  "/img/p-8ed1c80154-0.jpg",
+  "/img/p-8ed1c80154-1.jpg",
+  "/img/p-8ed1c80154-2.jpg",
+  "/img/p-8ed1c80154-3.jpg",
+  "/img/p-8ed1c80154-4.jpg"
+ ],
+ "krolewscy-szachisci-1057": [
+  "/img/p-a72b1ea648-0.jpg",
+  "/img/p-a72b1ea648-1.jpg",
+  "/img/p-a72b1ea648-2.jpg"
+ ],
+ "szachmat-academy-4488": [
+  "/img/p-cc2fb230cf-0.jpg",
+  "/img/p-cc2fb230cf-1.jpg",
+  "/img/p-cc2fb230cf-2.jpg"
+ ],
+ "roboty-i-kody-8060": [
+  "/img/p-2038a71d4b-0.jpg",
+  "/img/p-2038a71d4b-1.jpg",
+  "/img/p-2038a71d4b-2.jpg"
+ ],
+ "codekids-warszawa-4484": [
+  "/img/p-3324ed4a87-0.jpg",
+  "/img/p-3324ed4a87-1.jpg",
+  "/img/p-3324ed4a87-2.jpg",
+  "/img/p-3324ed4a87-3.jpg"
+ ],
+ "lingua-franca-school-641": [
+  "/img/p-2719c14c77-0.jpg",
+  "/img/p-2719c14c77-1.jpg",
+  "/img/p-2719c14c77-2.jpg",
+  "/img/p-2719c14c77-3.jpg",
+  "/img/p-2719c14c77-4.jpg"
+ ],
+ "bilingua-kids-7868": [
+  "/img/p-e696491bef-0.jpg",
+  "/img/p-e696491bef-1.jpg",
+  "/img/p-e696491bef-2.jpg"
+ ],
+ "pracownia-kolorowa-5639": [
+  "/img/p-6a7f3f8fac-0.jpg",
+  "/img/p-6a7f3f8fac-1.jpg",
+  "/img/p-6a7f3f8fac-2.jpg",
+  "/img/p-6a7f3f8fac-3.jpg",
+  "/img/p-6a7f3f8fac-4.jpg"
+ ],
+ "artus-studio-8850": [
+  "/img/p-13e9c720c9-0.jpg",
+  "/img/p-13e9c720c9-1.jpg",
+  "/img/p-13e9c720c9-2.jpg",
+  "/img/p-13e9c720c9-3.jpg"
+ ],
+ "stajnia-aki-mazowsza-9069": [
+  "/img/p-3dd3ddde83-0.jpg",
+  "/img/p-3dd3ddde83-1.jpg",
+  "/img/p-3dd3ddde83-2.jpg"
+ ],
+ "koniczynka-riding-club-6425": [
+  "/img/p-606a4d3d3c-0.jpg",
+  "/img/p-606a4d3d3c-1.jpg",
+  "/img/p-606a4d3d3c-2.jpg"
+ ],
+ "stylowa-yzwy-8542": [
+  "/img/p-e607e649db-0.jpg",
+  "/img/p-e607e649db-1.jpg",
+  "/img/p-e607e649db-2.jpg",
+  "/img/p-e607e649db-3.jpg"
+ ],
+ "icehockey-kids-warsaw-7833": [
+  "/img/p-5055418d12-0.jpg",
+  "/img/p-5055418d12-1.jpg",
+  "/img/p-5055418d12-2.jpg"
+ ],
+ "akrobatika-8236": [
+  "/img/p-fd363ea4b9-0.jpg",
+  "/img/p-fd363ea4b9-1.jpg",
+  "/img/p-fd363ea4b9-2.jpg",
+  "/img/p-fd363ea4b9-3.jpg",
+  "/img/p-fd363ea4b9-4.jpg"
+ ],
+ "sky-jump-trampoliny-4450": [
+  "/img/p-2801c353cd-0.jpg",
+  "/img/p-2801c353cd-1.jpg",
+  "/img/p-2801c353cd-2.jpg",
+  "/img/p-2801c353cd-3.jpg",
+  "/img/p-2801c353cd-4.jpg"
+ ],
+ "legia-run-academy-8992": [
+  "/img/p-09ab9d989d-0.jpg",
+  "/img/p-09ab9d989d-1.jpg",
+  "/img/p-09ab9d989d-2.jpg",
+  "/img/p-09ab9d989d-3.jpg",
+  "/img/p-09ab9d989d-4.jpg"
+ ],
+ "sprint-warszawa-1362": [
+  "/img/p-d7a8e9b226-0.jpg",
+  "/img/p-d7a8e9b226-1.jpg",
+  "/img/p-d7a8e9b226-2.jpg"
+ ],
+ "volley-pasja-4644": [
+  "/img/p-a32bbfdddf-0.jpg",
+  "/img/p-a32bbfdddf-1.jpg",
+  "/img/p-a32bbfdddf-2.jpg",
+  "/img/p-a32bbfdddf-3.jpg",
+  "/img/p-a32bbfdddf-4.jpg"
+ ],
+ "mokotow-baskets-6054": [
+  "/img/p-1fb32dd0cc-0.jpg",
+  "/img/p-1fb32dd0cc-1.jpg",
+  "/img/p-1fb32dd0cc-2.jpg",
+  "/img/p-1fb32dd0cc-3.jpg"
+ ],
+ "wola-eagles-9423": [
+  "/img/p-11c69a3149-0.jpg",
+  "/img/p-11c69a3149-1.jpg",
+  "/img/p-11c69a3149-2.jpg"
+ ],
+ "rakieta-tennis-club-8834": [
+  "/img/p-481ce61fcb-0.jpg",
+  "/img/p-481ce61fcb-1.jpg",
+  "/img/p-481ce61fcb-2.jpg",
+  "/img/p-481ce61fcb-3.jpg",
+  "/img/p-481ce61fcb-4.jpg"
+ ],
+ "set-point-academy-3749": [
+  "/img/p-90b11a401e-0.jpg",
+  "/img/p-90b11a401e-1.jpg",
+  "/img/p-90b11a401e-2.jpg",
+  "/img/p-90b11a401e-3.jpg",
+  "/img/p-90b11a401e-4.jpg"
+ ],
+ "samuraj-dojo-9808": [
+  "/img/p-b7de74b203-0.jpg",
+  "/img/p-b7de74b203-1.jpg",
+  "/img/p-b7de74b203-2.jpg",
+  "/img/p-b7de74b203-3.jpg"
+ ],
+ "bushido-ursynow-9391": [
+  "/img/p-1480672a52-0.jpg",
+  "/img/p-1480672a52-1.jpg",
+  "/img/p-1480672a52-2.jpg"
+ ],
+ "ring-wolna-strefa-2439": [
+  "/img/p-9602871790-0.jpg",
+  "/img/p-9602871790-1.jpg",
+  "/img/p-9602871790-2.jpg",
+  "/img/p-9602871790-3.jpg"
+ ],
+ "piano-forte-szko-a-2220": [
+  "/img/p-b55309c16d-0.jpg",
+  "/img/p-b55309c16d-1.jpg",
+  "/img/p-b55309c16d-2.jpg"
+ ],
+ "bebenki-music-school-5640": [
+  "/img/p-7ca60fb73a-0.jpg",
+  "/img/p-7ca60fb73a-1.jpg",
+  "/img/p-7ca60fb73a-2.jpg",
+  "/img/p-7ca60fb73a-3.jpg"
+ ],
+ "spiewajaco-8449": [
+  "/img/p-0652ba7f63-0.jpg",
+  "/img/p-0652ba7f63-1.jpg",
+  "/img/p-0652ba7f63-2.jpg",
+  "/img/p-0652ba7f63-3.jpg",
+  "/img/p-0652ba7f63-4.jpg"
+ ],
+ "maluszkowo-9845": [
+  "/img/p-1e952598eb-0.jpg",
+  "/img/p-1e952598eb-1.jpg",
+  "/img/p-1e952598eb-2.jpg"
+ ]
+}

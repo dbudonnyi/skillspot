@@ -1,0 +1,189 @@
+// SkillSpot — Warsaw activities marketplace
+// Schema v1 (will be critiqued below before we build on it)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  PROVIDER
+}
+
+enum RequestStatus {
+  NEW
+  ACCEPTED
+  DECLINED
+}
+
+enum Category {
+  FOOTBALL
+  SWIMMING
+  BASKETBALL
+  VOLLEYBALL
+  TENNIS
+  MARTIAL_ARTS
+  GYMNASTICS
+  DANCE
+  MUSIC
+  ART
+  CHESS
+  LANGUAGES
+  ROBOTICS
+  SKATING
+  HORSE_RIDING
+  ATHLETICS
+  OTHER
+}
+
+enum ProfileSource {
+  MANUAL
+  OSM
+  MOCK
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+
+  providerProfile ProviderProfile?
+  reviews         Review[]
+  favorites       Favorite[]
+  bookingRequests BookingRequest[]
+  notifications   Notification[]
+}
+
+model ProviderProfile {
+  id          String  @id @default(cuid())
+  ownerId     String  @unique
+  slug        String  @unique
+  name        String
+  category    Category
+  subcategory String?
+  source      ProfileSource @default(MANUAL)
+  osmId       String?  @unique
+  description String  @db.Text
+  phone       String?
+  email       String?
+  website     String?
+  instagram   String?
+  facebook    String?
+  booksy      String?
+
+  address   String
+  district  String?
+  lat       Float
+  lng       Float
+  minAge    Int     @default(3)
+  maxAge    Int     @default(99)
+  priceFrom Int? // PLN
+  priceUnit String  @default("per lesson")
+  coverImage String?
+  gallery    String[] @default([])
+  openingHours Json? // { "mon": {open:"09:00", close:"20:00"}, ... }
+
+  ratingAvg   Float  @default(0)
+  ratingCount Int    @default(0)
+  verified    Boolean @default(false)
+  featured    Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner     User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  services  Service[]
+  reviews   Review[]
+  favorites Favorite[]
+  requests  BookingRequest[]
+
+  @@index([category, ratingCount(sort: Desc)])
+  @@index([ratingAvg, ratingCount(sort: Desc)])
+  @@index([district])
+}
+
+model Service {
+  id          String  @id @default(cuid())
+  profileId   String
+  title       String
+  description String  @db.Text
+  price       Int // PLN
+  priceUnit   String  @default("per lesson")
+  ageMin      Int     @default(3)
+  ageMax      Int     @default(99)
+  active      Boolean @default(true)
+
+  profile ProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  requests BookingRequest[]
+
+  @@index([profileId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  profileId String
+  userId    String
+  rating    Int // 1..5
+  text      String   @db.Text
+  photos    String[] @default([])
+  createdAt DateTime @default(now())
+
+  profile ProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, userId]) // one review per user per profile
+  @@index([profileId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  profileId String
+  createdAt DateTime @default(now())
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile ProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId])
+}
+
+model BookingRequest {
+  id           String        @id @default(cuid())
+  profileId    String
+  userId       String
+  serviceId    String?
+  message      String        @db.Text
+  contactEmail String
+  contactPhone String?
+  status       RequestStatus @default(NEW)
+  createdAt    DateTime      @default(now())
+
+  profile ProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service Service?        @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+
+  @@index([profileId, status])
+  @@index([userId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String // NEW_REQUEST | NEW_REVIEW | REQUEST_STATUS
+  title     String
+  body      String
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+}
