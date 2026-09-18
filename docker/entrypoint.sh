@@ -15,21 +15,25 @@ s.on('error',()=>process.exit(1));
   sleep 1
 done
 
-# The generated Prisma client is baked into the image; the prisma/tsx CLIs are
-# pre-warmed in the local npm cache (/tmp/npm-cache), so these work offline.
-export npm_config_cache=/tmp/npm-cache
+# Generated Prisma client is baked into the image; prisma/tsx CLIs are warmed
+# in the image npm cache (~/.npm), so this works offline in practice.
 export npm_config_update_notifier=false
 
-if [ ! -f .schema-applied ]; then
-  echo "[skillspot] applying schema (prisma db push --skip-generate)"
-  npx --yes --prefer-offline prisma@6 db push --skip-generate --schema=prisma/schema.prisma
-  touch .schema-applied || true
-fi
+echo "[skillspot] applying schema (prisma db push --skip-generate)"
+npx --yes --prefer-offline prisma@6 db push --skip-generate --schema=prisma/schema.prisma
 
-if [ "$SEED" = "1" ] && [ ! -f .seeded ]; then
-  echo "[skillspot] seeding demo data..."
-  npx --yes --prefer-offline tsx@4 prisma/seed.ts
-  touch .seeded || true
+if [ "$SEED" = "1" ]; then
+  EMPTY=$(node -e "
+const {PrismaClient}=require('@prisma/client');
+const p=new PrismaClient();
+p.providerProfile.count().then(c=>{console.log(c);return p.\$disconnect()}).catch(()=>console.log('err'));
+" 2>/dev/null || echo err)
+  if [ "$EMPTY" = "0" ] || [ "$EMPTY" = "err" ]; then
+    echo "[skillspot] seeding demo data..."
+    npx --yes --prefer-offline tsx@4 prisma/seed.ts
+  else
+    echo "[skillspot] database already has data, skipping seed"
+  fi
 fi
 
 echo "[skillspot] starting Next.js server on ${HOSTNAME}:${PORT}"
