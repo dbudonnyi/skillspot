@@ -1,21 +1,21 @@
 # SkillSpot 🏅
 
-**SkillSpot** — маркетплейс детских и взрослых секций, спортивных клубов и репетиторов (MVP для Варшавы). Родители ищут школы по категориям, возрасту, рейтингу и расстоянию («Near me»), смотрят профили с фото, отзывами и контактами, добавляют в избранное и отправляют заявки на запись. Провайдеры регистрируют школу, ведут профиль, услуги и цены, получают заявки и уведомления (in-app + email).
+**SkillSpot** is a marketplace for kids' & adults' extracurricular activities, sports clubs and tutors (MVP scope: Warsaw). Parents search schools by category, age group, rating and distance ("Near me"), browse profiles with photos, reviews and contacts, save favorites and send booking requests. Providers register their school, manage their profile, services and pricing, and receive requests with notifications (in-app + email).
 
-**Стек:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 + shadcn/ui (Base UI) · Prisma + PostgreSQL · JWT-auth (httpOnly cookie, bcrypt) · React-Leaflet (OpenStreetMap, без API-ключей) · framer-motion · Playwright (e2e).
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 + shadcn/ui (Base UI) · Prisma + PostgreSQL · JWT auth (httpOnly cookie, bcrypt) · React-Leaflet (OpenStreetMap, no API keys) · framer-motion · Playwright (e2e).
 
-**Фишки:**
-- 🌍 Три языка UI: **українська / Polski / English**. Контент (описания, отзывы) добавляется на любом языке — включается машинный перевод на язык интерфейса (детект языка, чанкинг, fallback нескольких провайдеров, кэш в таблице `Translation`).
-- 📍 Геолокация: «Near me» запрашивает доступ к локации, рисует круг радиуса на карте, показывает бейджи расстояний и сортирует «nearest first».
-- ✨ Apple-style дизайн: spring-анимации, плавные переходы, glass-эффекты.
-- 🔔 Уведомления провайдеру: in-app «колокольчик» + автоматическое письмо (SMTP либо ethereal/console fallback).
-- 🗺 60+ реальных профилей Варшавы в демоданных (Overpass API + курируемый датасет), включая «Варшав Шахтар Pro School» и «Crocodile».
+**Highlights:**
+- 🌍 Three UI languages: **українська / Polski / English**. Content (descriptions, reviews) can be written in any language — machine translation into the active UI language on demand (language detection, chunking, multi-provider fallback, cache in the `Translation` table).
+- 📍 Geolocation: "Near me" asks for location permission, draws a radius circle on the map, shows distance badges and sorts "nearest first".
+- ✨ Apple-style design: spring animations, smooth transitions, glass effects.
+- 🔔 Provider notifications: in-app bell + automatic email (SMTP, or ethereal/console fallback).
+- 🗺 60+ real Warsaw profiles in the demo dataset (Overpass API + curated data), including "Варшав Шахтар Pro School" and "Crocodile".
 
 ---
 
-## 🐳 Быстрый старт через Docker (рекомендуется)
+## 🐳 Quick start with Docker (recommended)
 
-Нужен только Docker с compose — PostgreSQL, миграции и демо-данные поднимутся сами.
+All you need is Docker with compose — PostgreSQL, migrations and demo data are brought up automatically.
 
 ```bash
 git clone https://github.com/dbudonnyi/skillspot.git
@@ -23,34 +23,34 @@ cd skillspot
 docker compose up -d --build
 ```
 
-Готово: **http://localhost:8080**
+Done: **http://localhost:8080**
 
-- `db` — PostgreSQL 16 (данные в volume `pgdata`).
-- `app` — Next.js (standalone-сборка). При первом старте сам применяет схему (`prisma db push`) и, если `SEED=1` (по умолчанию), загружает демо-датасет: 60+ профилей, услуги, ~790 отзывов, избранное, демо-заявки.
+- `db` — PostgreSQL 16 (data persisted in the `pgdata` volume).
+- `app` — Next.js (standalone build). On first start it applies the schema (`prisma db push`) and, if `SEED=1` (the default), loads the demo dataset: 60+ profiles, services, ~790 reviews, favorites and demo booking requests.
 
-### Демо-аккаунты
+### Demo accounts
 
-| Роль | Email | Пароль |
+| Role | Email | Password |
 |---|---|---|
-| Родитель | `parent@demo.pl` | `demo1234` |
-| Провайдер (Шахтар) | `demo@szachtar.pl` | `demo1234` |
+| Parent | `parent@demo.pl` | `demo1234` |
+| Provider (Shakhtar owner) | `demo@szachtar.pl` | `demo1234` |
 
-### Полезные команды
+### Useful commands
 
 ```bash
-docker compose logs -f app     # логи (сюда же попадают "отправленные" email без SMTP)
-docker compose down            # остановить
-docker compose down -v         # остановить и стереть данные БД
-docker compose restart app     # перезапустить приложение
+docker compose logs -f app     # app logs (outgoing emails are printed here without SMTP)
+docker compose down            # stop
+docker compose down -v         # stop and wipe database data
+docker compose restart app     # restart the app
 ```
 
-Переменные окружения — в `docker-compose.yml`: `DATABASE_URL`, `SEED`, `NEXT_PUBLIC_APP_URL`, `JWT_SECRET`, опционально `SMTP_*`/`EMAIL_FROM`. Порт наружу — строка `"8080:3000"` там же.
+Environment variables live in `docker-compose.yml`: `DATABASE_URL`, `SEED`, `NEXT_PUBLIC_APP_URL`, `JWT_SECRET`, optionally `SMTP_*`/`EMAIL_FROM`. The published port is the `"8080:3000"` line in the same file.
 
 ---
 
-## 🛠 Запуск с нуля без Docker
+## 🛠 Running from scratch without Docker
 
-Требования: **Node.js ≥ 20**, **PostgreSQL** (локально или контейнером):
+Requirements: **Node.js ≥ 20**, **PostgreSQL** (local, or in a container):
 
 ```bash
 docker run -d --name pg -e POSTGRES_USER=skillspot -e POSTGRES_PASSWORD=*** \
@@ -61,9 +61,9 @@ docker run -d --name pg -e POSTGRES_USER=skillspot -e POSTGRES_PASSWORD=*** \
 git clone https://github.com/dbudonnyi/skillspot.git
 cd skillspot
 npm install
-cp .env.example .env           # проверьте DATABASE_URL
-npx prisma db push             # схема БД + генерация клиента
-npm run seed                   # демо-данные (60+ профилей, отзывы, аккаунты)
+cp .env.example .env           # adjust DATABASE_URL if needed
+npx prisma db push             # create schema + generate the client
+npm run seed                   # demo data (60+ profiles, reviews, accounts)
 npm run dev                    # dev  → http://localhost:3000
 # production:
 npm run build && npx next start -H 0.0.0.0 -p 8080
@@ -71,44 +71,44 @@ npm run build && npx next start -H 0.0.0.0 -p 8080
 
 ---
 
-## 🧪 Проверки
+## 🧪 Checks
 
 ```bash
-npx tsc --noEmit               # типы
+npx tsc --noEmit               # typecheck
 npm run lint                   # ESLint
-npm run e2e                    # Playwright smoke (нужен запущенный сервер на :8080)
+npm run e2e                    # Playwright smoke suite (needs a server on :8080)
 ```
 
-`e2e/smoke.mjs` (38+ шагов): home, поиск/фильтры/сортировки, карта + геолокация «near me», переключение uk/pl/en, машинный перевод описаний и отзывов, профиль, контакты за кнопкой, регистрация/логин обеих ролей, избранное, отзыв, заявка → уведомление провайдеру → accept, дашборд, 404, ноль console/hydration-ошибок. Перед прогоном сделайте ре-сид (тесты мутируют данные).
+`e2e/smoke.mjs` (38+ steps): home, search/filters/sorts, map + "near me" geolocation, uk/pl/en switching, machine translation of descriptions and reviews, provider profile, contact gating behind a button, register/login for both roles, favorites, review publishing, booking request → provider notification → accept, dashboard, 404, zero console/hydration errors. Re-seed before a run (the tests mutate data).
 
 ---
 
-## 📁 Структура
+## 📁 Structure
 
 ```
 src/
-  app/            # App Router: страницы + /api routes
+  app/            # App Router: pages + /api routes
   actions/        # server actions (auth, bookings, reviews, favorites…)
-  components/     # UI: shadcn/ui + карта, i18n-свитчер, анимации
-  i18n/           # словарь uk/pl/en + серверная локализация
-  lib/            # prisma, geo (haversine), search, translate (MT+кэш), auth, mail
+  components/     # UI: shadcn/ui + map, i18n switcher, animations
+  i18n/           # uk/pl/en dictionary + server-side localization
+  lib/            # prisma, geo (haversine), search, translate (MT + cache), auth, mail
 prisma/
   schema.prisma   # User, ProviderProfile, Service, Review, Favorite,
                   # BookingRequest, Notification, Translation
-  seed.ts         # детерминированный сид
-  seed-data/      # мастер-датасет профилей (Overpass + curated)
+  seed.ts         # deterministic seed
+  seed-data/      # master profile dataset (Overpass + curated)
 docker/entrypoint.sh   # wait-for-db → db push → seed → node server.js
-e2e/smoke.mjs          # Playwright smoke-сьюта
+e2e/smoke.mjs          # Playwright smoke suite
 ```
 
 ---
 
-## 🔐 Примечания для прода
+## 🔐 Production notes
 
-- Смените `JWT_SECRET` и пароль Postgres; удалите демо-аккаунты.
-- Машинный перевод — публичные API (lingva.ml, MyMemory) с кэшем и graceful fallback на оригинал; для продакшена — платный ключ (Google/DeepL).
-- HTTPS: браузеры дают геолокацию только на `https://` или `localhost`.
-- Geo-поиск: bbox-префильтр + haversine — достаточно для одного города; при росте — PostGIS.
+- Change `JWT_SECRET` and the Postgres password; remove the demo accounts.
+- Machine translation uses public APIs (lingva.ml, MyMemory) with caching and graceful fallback to the original text; for production, plug in a paid key (Google/DeepL).
+- HTTPS: browsers only expose geolocation on `https://` or `localhost`.
+- Geo search: bounding-box prefilter + haversine — fine for a single city; move to PostGIS when you scale.
 
 ## 📄 License
 
