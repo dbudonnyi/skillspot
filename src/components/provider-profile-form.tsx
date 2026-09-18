@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CATEGORIES, CATEGORY_LABELS, type CategoryValue } from "@/lib/geo";
+import { CATEGORIES } from "@/lib/geo";
+import { useT } from "@/components/locale-provider";
 import { updateProviderProfileAction, type ActionResult } from "@/actions/profile";
 import { toast } from "sonner";
 
@@ -75,6 +76,7 @@ function Field({
 }
 
 export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
+  const { t } = useT();
   const coverRef = useRef<HTMLInputElement>(null);
   const galleryRef = useRef<HTMLInputElement>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(
@@ -92,7 +94,7 @@ export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
   useEffect(() => {
     if (state?.ok) {
       setGalleryData([]);
-      toast.success("Profile saved ✓");
+      toast.success(t("dash.savedToast"));
       router.refresh();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,9 +118,9 @@ export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
       <input type="hidden" name="coverImage" defaultValue={profile.coverImage ?? ""} />
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Business name" name="name" defaultValue={profile.name} />
+        <Field label={t("dash.name")} name="name" defaultValue={profile.name} />
         <div className="space-y-1.5">
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category">{t("dash.category")}</Label>
           <select
             id="category"
             name="category"
@@ -127,31 +129,31 @@ export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
           >
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>
-                {CATEGORY_LABELS[c as CategoryValue]}
+                {t("cat." + c)}
               </option>
             ))}
           </select>
         </div>
         <Field
-          label="Subcategory (e.g. Piano, Hip-hop)"
+          label={t("dash.subcategory")}
           name="subcategory"
           defaultValue={profile.subcategory}
         />
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Min age" name="minAge" type="number" defaultValue={profile.minAge} />
-          <Field label="Max age" name="maxAge" type="number" defaultValue={profile.maxAge} />
+          <Field label={t("dash.minAge")} name="minAge" type="number" defaultValue={profile.minAge} />
+          <Field label={t("dash.maxAge")} name="maxAge" type="number" defaultValue={profile.maxAge} />
         </div>
         <Field
-          label="Price from (zł)"
+          label={t("dash.priceFrom")}
           name="priceFrom"
           type="number"
           defaultValue={profile.priceFrom}
         />
-        <Field label="Price unit" name="priceUnit" defaultValue={profile.priceUnit} placeholder="per lesson / per month" />
+        <Field label={t("dash.price")} name="priceUnit" defaultValue={profile.priceUnit} placeholder="per lesson / per month" />
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">{t("dash.desc")}</Label>
         <Textarea
           id="description"
           name="description"
@@ -163,35 +165,33 @@ export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Address" name="address" defaultValue={profile.address} />
-        <Field label="Latitude" name="lat" type="number" defaultValue={profile.lat} />
-        <Field label="Longitude" name="lng" type="number" defaultValue={profile.lng} />
+        <Field label={t("dash.address")} name="address" defaultValue={profile.address} />
+        <Field label="lat" name="lat" type="number" defaultValue={profile.lat} />
+        <Field label="lng" name="lng" type="number" defaultValue={profile.lng} />
       </div>
       <p className="-mt-3 flex items-center gap-1 text-xs text-muted-foreground">
-        <MapPin className="size-3" /> Tip: open your location on
-        openstreetmap.org, right-click → share to copy coordinates. District is
-        auto-detected from coordinates.
+        <MapPin className="size-3" /> {t("dash.tipCoords")}
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Field label="Phone" name="phone" defaultValue={profile.phone} placeholder="+48 …" />
-        <Field label="Public email" name="email" type="email" defaultValue={profile.email} />
-        <Field label="Website" name="website" defaultValue={profile.website} placeholder="https://…" />
-        <Field label="Instagram" name="instagram" defaultValue={profile.instagram} placeholder="https://instagram.com/…" />
-        <Field label="Facebook" name="facebook" defaultValue={profile.facebook} placeholder="https://facebook.com/…" />
-        <Field label="Booksy" name="booksy" defaultValue={profile.booksy} placeholder="https://booksy.com/…" />
+        <Field label={t("dash.phone")} name="phone" defaultValue={profile.phone} placeholder="+48 …" />
+        <Field label={t("dash.email")} name="email" type="email" defaultValue={profile.email} />
+        <Field label={t("dash.website")} name="website" defaultValue={profile.website} placeholder="https://…" />
+        <Field label={t("dash.instagram")} name="instagram" defaultValue={profile.instagram} placeholder="https://instagram.com/…" />
+        <Field label={t("dash.facebook")} name="facebook" defaultValue={profile.facebook} placeholder="https://facebook.com/…" />
+        <Field label={t("dash.booksy")} name="booksy" defaultValue={profile.booksy} placeholder="https://booksy.com/…" />
       </div>
 
       {/* Cover */}
       <div className="grid gap-4 sm:grid-cols-[240px_1fr]">
         <div>
-          <Label className="mb-1.5 block">Cover photo</Label>
+          <Label className="mb-1.5 block">{t("dash.cover")}</Label>
           <div className="relative aspect-[16/9] overflow-hidden rounded-lg border bg-muted">
             {coverPreview ? (
               <Image src={coverPreview} alt="cover" fill sizes="240px" className="object-cover" unoptimized />
             ) : (
               <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
-                No cover
+                {t("dash.noCover")}
               </div>
             )}
           </div>
@@ -215,12 +215,12 @@ export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
             className="mt-2 w-full"
             onClick={() => coverRef.current?.click()}
           >
-            <ImagePlus className="mr-2 size-4" /> Change cover
+            <ImagePlus className="mr-2 size-4" /> {t("dash.changeCover")}
           </Button>
         </div>
         <div>
           <Label className="mb-1.5 block">
-            Gallery ({profile.gallery.length + galleryData.length} photos)
+            {t("dash.gallery")} ({profile.gallery.length + galleryData.length})
           </Label>
           <input
             ref={galleryRef}
@@ -264,7 +264,7 @@ export function ProviderProfileForm({ profile }: { profile: ProfileData }) {
         </p>
       )}
       <Button type="submit" disabled={pending} size="lg">
-        <Save className="mr-2 size-4" /> {pending ? "Saving…" : "Save profile"}
+        <Save className="mr-2 size-4" /> {pending ? t("dash.saving") : t("dash.save")}
       </Button>
     </form>
   );

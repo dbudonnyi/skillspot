@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { submitReviewAction, type ActionResult } from "@/actions/profile";
 import { toast } from "sonner";
+import { useT } from "@/components/locale-provider";
 
 const MAX_FILE = 5 * 1024 * 1024;
 
@@ -37,6 +38,7 @@ export function ReviewSection({
   ratingAvg: number;
   ratingCount: number;
 }) {
+  const { t } = useT();
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [photos, setPhotos] = useState<string[]>([]);
@@ -52,7 +54,7 @@ export function ReviewSection({
     if (state?.ok) {
       setPhotos([]);
       setRating(0);
-      toast.success("Review published — thank you!");
+      toast.success(t("review.published"));
       router.refresh();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,7 +73,7 @@ export function ReviewSection({
     for (const f of Array.from(files).slice(0, 6 - photos.length)) {
       if (!f.type.startsWith("image/")) continue;
       if (f.size > MAX_FILE) {
-        toast.error(`${f.name}: max 5 MB per photo.`);
+        toast.error(f.name + ": max 5 MB");
         continue;
       }
       next.push(await fileToDataUrl(f));
@@ -82,7 +84,7 @@ export function ReviewSection({
   return (
     <Card className="sticky top-20">
       <CardHeader>
-        <CardTitle className="text-lg">Leave a review</CardTitle>
+        <CardTitle className="text-lg">{t("review.title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex items-center gap-4 rounded-lg bg-muted/50 p-3">
@@ -91,7 +93,7 @@ export function ReviewSection({
               {ratingAvg > 0 ? ratingAvg.toFixed(1) : "—"}
             </div>
             <div className="text-xs text-muted-foreground">
-              {ratingCount} reviews
+              {t("profile.reviews")} ({ratingCount})
             </div>
           </div>
           <div className="flex-1 space-y-0.5">
@@ -120,20 +122,18 @@ export function ReviewSection({
 
         {isOwner ? (
           <p className="text-sm text-muted-foreground">
-            This is your profile — you can&apos;t review it.
+            {t("review.own")}
           </p>
         ) : !signedIn ? (
           <div className="space-y-3 text-center">
-            <p className="text-sm text-muted-foreground">
-              Log in to rate this place and share photos.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("review.loginText")}</p>
             <Button onClick={() => router.push("/login")} className="w-full">
-              Log in to review
+              {t("review.loginBtn")}
             </Button>
           </div>
         ) : hasReviewed ? (
           <p className="text-sm text-muted-foreground">
-            You already reviewed this place. Thanks! 🙏
+            {t("review.already")}
           </p>
         ) : (
           <form action={formAction} className="space-y-3">
@@ -154,7 +154,7 @@ export function ReviewSection({
                   onClick={() => setRating(s)}
                   onMouseEnter={() => setHover(s)}
                   className="p-0.5"
-                  aria-label={`${s} star${s > 1 ? "s" : ""}`}
+                  aria-label={String(s)}
                 >
                   <Star
                     className={`size-7 transition-colors ${
@@ -168,7 +168,7 @@ export function ReviewSection({
             </div>
             {rating < 1 && (
               <p className="text-xs text-amber-600">
-                Pick a star rating before submitting.
+                {t("review.pickStars")}
               </p>
             )}
             <Textarea
@@ -176,7 +176,7 @@ export function ReviewSection({
               required
               minLength={10}
               rows={4}
-              placeholder="How were the classes? Coaches, organisation, progress…"
+              placeholder={t("review.placeholder")}
             />
             <div>
               <input
@@ -194,7 +194,7 @@ export function ReviewSection({
                 disabled={photos.length >= 6}
                 onClick={() => fileRef.current?.click()}
               >
-                <Camera className="mr-2 size-4" /> Add photos ({photos.length}/6)
+                <Camera className="mr-2 size-4" /> {t("review.photos", { n: photos.length })}
               </Button>
               {photos.length > 0 && (
                 <div className="mt-2 grid grid-cols-3 gap-1.5">
@@ -231,7 +231,7 @@ export function ReviewSection({
               </p>
             )}
             <Button type="submit" disabled={pending} className="w-full">
-              {pending ? "Publishing…" : "Publish review"}
+              {pending ? t("review.publishing") : t("review.publish")}
             </Button>
           </form>
         )}

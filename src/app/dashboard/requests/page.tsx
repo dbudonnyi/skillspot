@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { requireProvider } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { RequestList } from "@/components/request-list";
+import { getDict } from "@/i18n/server";
+import { tr } from "@/i18n/dictionary";
+
 
 export const metadata: Metadata = { title: "Incoming requests" };
 export const dynamic = "force-dynamic";
@@ -19,6 +22,8 @@ export default async function RequestsPage() {
     select: { id: true, name: true },
   });
   if (!profile) redirect("/login");
+  const dict = await getDict();
+  const t = (k: string) => tr(dict, k);
   const requests = await prisma.bookingRequest.findMany({
     where: { profileId: profile.id },
     orderBy: { createdAt: "desc" },
@@ -30,11 +35,8 @@ export default async function RequestsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-1 text-3xl font-extrabold">Incoming requests</h1>
-      <p className="mb-6 text-sm text-muted-foreground">
-        Parents&apos; booking requests for {profile.name}. Accept or decline —
-        they get notified instantly.
-      </p>
+      <h1 className="mb-1 text-3xl font-extrabold tracking-tight">{t("requests.title")}</h1>
+      <p className="mb-6 text-sm text-muted-foreground">{t("requests.subtitle")}</p>
       <RequestList
         requests={requests.map((r) => ({
           id: r.id,

@@ -13,6 +13,7 @@ import {
   type ActionResult,
 } from "@/actions/profile";
 import { toast } from "sonner";
+import { useT } from "@/components/locale-provider";
 
 type Svc = {
   id: string;
@@ -31,6 +32,7 @@ export function ServicesManager({
   profileId: string;
   services: Svc[];
 }) {
+  const { t } = useT();
   const [editing, setEditing] = useState<Svc | "new" | null>(null);
   const router = useRouter();
   const [state, formAction, pending] = useActionState<
@@ -42,7 +44,7 @@ export function ServicesManager({
   useEffect(() => {
     if (state?.ok) {
       setEditing(null);
-      toast.success("Saved");
+      toast.success(t("dash.savedToast"));
       router.refresh();
     } else if (state?.error) toast.error(state.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,40 +59,40 @@ export function ServicesManager({
         <input type="hidden" name="serviceId" value={s?.id ?? ""} />
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="s-title">Title</Label>
+            <Label htmlFor="s-title">{t("dash.serviceTitle")}</Label>
             <Input id="s-title" name="title" required minLength={3} defaultValue={s?.title} placeholder="Football kids 6–9" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="s-price">Price (zł)</Label>
+              <Label htmlFor="s-price">{t("dash.price")}</Label>
               <Input id="s-price" name="price" type="number" min={0} required defaultValue={s?.price ?? 100} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="s-unit">Unit</Label>
+              <Label htmlFor="s-unit">z\u0142 /</Label>
               <Input id="s-unit" name="priceUnit" defaultValue={s?.priceUnit ?? "per lesson"} />
             </div>
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="s-desc">Description</Label>
+          <Label htmlFor="s-desc">{t("dash.serviceDesc")}</Label>
           <Textarea id="s-desc" name="description" required minLength={10} rows={3} defaultValue={s?.description} />
         </div>
         <div className="grid grid-cols-2 gap-3 sm:max-w-xs">
           <div className="space-y-1.5">
-            <Label htmlFor="s-min">Age from</Label>
+            <Label htmlFor="s-min">{t("dash.ageFrom")}</Label>
             <Input id="s-min" name="ageMin" type="number" min={0} max={18} defaultValue={s?.ageMin ?? 6} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="s-max">Age to</Label>
+            <Label htmlFor="s-max">{t("dash.ageTo")}</Label>
             <Input id="s-max" name="ageMax" type="number" min={3} max={99} defaultValue={s?.ageMax ?? 12} />
           </div>
         </div>
         <div className="flex gap-2">
           <Button type="submit" disabled={pending}>
-            {pending ? "Saving…" : "Save class"}
+            {pending ? t("dash.saving") : t("dash.saveClass")}
           </Button>
           <Button type="button" variant="ghost" onClick={() => setEditing(null)}>
-            Cancel
+            {t("dash.cancel")}
           </Button>
         </div>
       </form>
@@ -134,7 +136,7 @@ export function ServicesManager({
                 if (!confirm(`Delete "${s.title}"?`)) return;
                 const res = await deleteServiceAction(s.id);
                 if (res.ok) {
-                  toast.success("Deleted");
+                  toast.success(t("dash.deleted"));
                   router.refresh();
                 } else toast.error(res.error);
               }}
@@ -145,7 +147,7 @@ export function ServicesManager({
         </div>
       ))}
       <Button variant="outline" onClick={() => setEditing("new")}>
-        <Plus className="mr-2 size-4" /> Add class
+        <Plus className="mr-2 size-4" /> {t("dash.addService")}
       </Button>
     </div>
   );

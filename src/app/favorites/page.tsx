@@ -7,6 +7,9 @@ import { ProfileCard } from "@/components/profile-card";
 import { haversineKm, WARSAW_CENTER } from "@/lib/geo";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "cn";
+import { getDict } from "@/i18n/server";
+import { tr } from "@/i18n/dictionary";
+
 
 export const metadata: Metadata = { title: "Favorites" };
 export const dynamic = "force-dynamic";
@@ -18,6 +21,8 @@ export default async function FavoritesPage() {
   } catch {
     redirect("/login");
   }
+  const dict = await getDict();
+  const t = (k: string) => tr(dict, k);
   const favs = await prisma.favorite.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
@@ -26,15 +31,13 @@ export default async function FavoritesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-extrabold">My favorites</h1>
+      <h1 className="mb-6 text-3xl font-extrabold tracking-tight">{t("favorites.title")}</h1>
       {favs.length === 0 ? (
         <div className="rounded-xl border bg-card p-12 text-center">
           <div className="text-4xl">❤️</div>
-          <p className="mt-3 text-muted-foreground">
-            You haven&apos;t saved any places yet.
-          </p>
-          <Link href="/search" className={cn(buttonVariants(), "mt-4")}>
-            Discover activities
+          <p className="mt-3 text-muted-foreground">{t("favorites.empty")}</p>
+          <Link href="/search" className={cn(buttonVariants(), "mt-4 rounded-full")}>
+            {t("favorites.cta")}
           </Link>
         </div>
       ) : (

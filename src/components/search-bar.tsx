@@ -1,39 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useT } from "@/components/locale-provider";
 
 export function SearchBar({ initialQuery = "" }: { initialQuery?: string }) {
-  const [q, setQ] = useState(initialQuery);
+  const { t } = useT();
   const router = useRouter();
+  const [q, setQ] = useState(initialQuery);
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const query = q.trim();
+    router.push(query ? "/search?q=" + encodeURIComponent(query) : "/search");
+  };
 
   return (
     <form
-      className="flex gap-2"
-      onSubmit={(e) => {
-        e.preventDefault();
-        router.push(
-          q.trim()
-            ? `/search?q=${encodeURIComponent(q.trim())}`
-            : "/search"
-        );
-      }}
+      onSubmit={onSubmit}
+      className="group relative flex items-center rounded-full bg-card shadow-pop ring-1 ring-black/5 transition-all focus-within:ring-2 focus-within:ring-primary/40 dark:ring-white/10"
     >
-      <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Football, piano, swimming near Mokotów…"
-          className="h-12 w-full rounded-xl border bg-background pl-10 pr-4 text-base shadow-sm outline-none ring-ring focus-visible:ring-2"
-          aria-label="Search activities"
-        />
-      </div>
-      <Button size="lg" className="rounded-xl px-6" type="submit">
-        Search
-      </Button>
+      <Search className="pointer-events-none absolute left-4 size-5 text-muted-foreground" />
+      <input
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder={t("home.searchPlaceholder")}
+        aria-label={t("home.search")}
+        data-testid="search-input"
+        className="h-12 w-full bg-transparent pl-12 pr-28 text-base outline-none placeholder:text-muted-foreground"
+      />
+      <button
+        type="submit"
+        className="absolute right-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] active:scale-95"
+      >
+        {t("home.search")}
+      </button>
     </form>
   );
 }

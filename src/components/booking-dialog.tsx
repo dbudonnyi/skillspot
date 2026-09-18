@@ -19,6 +19,7 @@ import { submitBookingRequestAction, type ActionResult } from "@/actions/profile
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "cn";
 import { toast } from "sonner";
+import { useT } from "@/components/locale-provider";
 
 export function BookingDialog({
   profileId,
@@ -33,21 +34,23 @@ export function BookingDialog({
   signedIn: boolean;
   isOwner: boolean;
 }) {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
     submitBookingRequestAction,
-    null
+    null,
   );
 
   /* eslint-disable react-hooks/set-state-in-effect -- closing dialog on actionResult is the canonical useActionState pattern */
   useEffect(() => {
     if (state?.ok) {
       setOpen(false);
-      toast.success("Request sent! The provider was notified by email and in-app.");
+      toast.success(t("booking.sent"));
     } else if (state?.error) {
       toast.error(state.error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -58,80 +61,72 @@ export function BookingDialog({
       <DialogTrigger
         className={cn(
           buttonVariants({ size: "lg" }),
-          "w-full gap-1.5 [&_svg]:size-4"
+          "w-full gap-1.5 [&_svg]:size-4 rounded-xl",
         )}
+        data-testid="booking-open"
       >
-        <CalendarCheck /> Request to join
+        <CalendarCheck /> {t("booking.request")}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="rounded-3xl">
         <DialogHeader>
-          <DialogTitle>Contact {profileName}</DialogTitle>
-          <DialogDescription>
-            Send a booking request — the provider gets an email and an in-app
-            notification.
-          </DialogDescription>
+          <DialogTitle>{t("booking.title", { name: profileName })}</DialogTitle>
+          <DialogDescription>{t("booking.desc")}</DialogDescription>
         </DialogHeader>
         {!signedIn ? (
           <div className="space-y-3 py-4 text-center">
-            <p className="text-sm text-muted-foreground">
-              Please log in to send a request.
-            </p>
-            <Button onClick={() => router.push("/login")}>Log in</Button>
+            <p className="text-sm text-muted-foreground">{t("booking.loginTitle")}</p>
+            <Button onClick={() => router.push("/login")}>{t("booking.loginBtn")}</Button>
           </div>
         ) : (
           <form action={formAction} className="space-y-4">
             <input type="hidden" name="profileId" value={profileId} />
             {services.length > 0 && (
               <div className="space-y-1.5">
-                <Label htmlFor="svc">Class (optional)</Label>
+                <Label htmlFor="svc">{t("booking.classOptional")}</Label>
                 <select
                   id="svc"
                   name="serviceId"
-                  className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  className="h-10 w-full rounded-xl border border-input bg-background px-3 text-sm"
                   defaultValue=""
                 >
-                  <option value="">General inquiry</option>
+                  <option value="">{t("booking.general")}</option>
                   {services.map((s) => (
                     <option key={s.id} value={s.id}>
-                      {s.title} — {s.price} zł
+                      {s.title} — {s.price} z\u0142
                     </option>
                   ))}
                 </select>
               </div>
             )}
             <div className="space-y-1.5">
-              <Label htmlFor="msg">Message</Label>
+              <Label htmlFor="msg">{t("booking.message")}</Label>
               <Textarea
                 id="msg"
                 name="message"
                 required
                 minLength={10}
                 rows={4}
-                placeholder="Hi! I'm interested in classes for my 7-year-old son. What groups have open spots?"
+                placeholder={t("booking.messagePlaceholder")}
+                data-testid="booking-message"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="ce">Contact email</Label>
-                <Input id="ce" name="contactEmail" type="email" required />
+                <Label htmlFor="ce">{t("booking.contactEmail")}</Label>
+                <Input id="ce" name="contactEmail" type="email" required className="rounded-xl" />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="cp">Phone (optional)</Label>
-                <Input id="cp" name="contactPhone" type="tel" placeholder="+48 …" />
+                <Label htmlFor="cp">{t("booking.phoneOptional")}</Label>
+                <Input id="cp" name="contactPhone" type="tel" placeholder="+48 \u2026" className="rounded-xl" />
               </div>
             </div>
             {state?.error && (
-              <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300">
+              <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300">
                 {state.error}
               </p>
             )}
-            <Button
-              type="submit"
-              disabled={pending}
-              className="w-full"
-              formNoValidate={false}
-            >
-              {pending ? "Sending…" : "Send request"}
+            <Button type="submit" disabled={pending} className="w-full rounded-xl" size="lg">
+              {pending ? t("booking.sending") : t("booking.send")}
             </Button>
           </form>
         )}

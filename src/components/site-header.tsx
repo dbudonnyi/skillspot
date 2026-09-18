@@ -2,8 +2,11 @@ import Link from "next/link";
 import { GraduationCap } from "lucide-react";
 import { UserMenu } from "@/components/user-menu";
 import { NotificationBell } from "@/components/notification-bell";
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { getDict } from "@/i18n/server";
+import { tr } from "@/i18n/dictionary";
 
-export function SiteHeader({
+export async function SiteHeader({
   user,
   unread,
 }: {
@@ -15,56 +18,60 @@ export function SiteHeader({
   } | null;
   unread: number;
 }) {
+  const dict = await getDict();
+  const t = (k: string) => tr(dict, k);
+
   return (
-    <header className="sticky top-0 z-[1100] border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+    <header className="glass sticky top-0 z-[1100] border-b border-black/5 dark:border-white/10">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
+        <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-sm">
             <GraduationCap className="size-5" />
           </span>
           <span>
             Skill<span className="text-primary">Spot</span>
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+        <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
           <Link
             href="/search"
-            className="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
-            Discover
+            {t("nav.discover")}
           </Link>
           <Link
             href="/search?sort=rating"
-            className="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
-            Top rated
+            {t("nav.topRated")}
           </Link>
           {user?.role === "USER" && (
             <Link
               href="/favorites"
-              className="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              Favorites
+              {t("nav.favorites")}
             </Link>
           )}
           {user?.role === "PROVIDER" && (
             <Link
               href="/dashboard"
-              className="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              Dashboard
+              {t("nav.dashboard")}
             </Link>
           )}
           {user?.role === "PROVIDER" && user.profileSlug && (
             <Link
-              href={`/provider/${user.profileSlug}`}
-              className="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              href={"/provider/" + user.profileSlug}
+              className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              My public page
+              {t("nav.myPage")}
             </Link>
           )}
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5">
+          <LocaleSwitcher />
           {user ? (
             <>
               <NotificationBell initialUnread={unread} />
@@ -76,15 +83,15 @@ export function SiteHeader({
             <>
               <Link
                 href="/login"
-                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Log in
+                {t("auth.login")}
               </Link>
               <Link
                 href="/register"
-                className="rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="rounded-full bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:scale-[1.03] hover:bg-primary/90 active:scale-95"
               >
-                Sign up
+                {t("auth.signup")}
               </Link>
             </>
           )}

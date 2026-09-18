@@ -30,8 +30,9 @@ export default async function SearchPage({ searchParams }: SearchProps) {
   const category =
     CATEGORIES.find((c) => c === str(sp, "category")) ?? undefined;
   const sort = (["distance", "rating", "reviews", "price"] as const).find(
-    (s) => s === str(sp, "sort")
+    (s) => s === str(sp, "sort"),
   );
+  const areaName = str(sp, "area");
   const params = {
     q: str(sp, "q"),
     category,
@@ -50,16 +51,16 @@ export default async function SearchPage({ searchParams }: SearchProps) {
     console.error("[search]", err);
   }
 
-  const usingUserLocation =
-    typeof params.lat === "number" && typeof params.lng === "number";
+  const usingUserLocation = str(sp, "near") === "1";
 
+  // pass user coords to the map via query so ProvidersMap can show "you" + radius
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
       <div className="mb-4 max-w-2xl">
         <SearchBar initialQuery={params.q ?? ""} />
       </div>
       <div className="flex flex-col gap-6 lg:flex-row">
-        <aside className="lg:w-64 shrink-0">
+        <aside className="lg:w-72 shrink-0">
           <SearchFilters />
         </aside>
         <div className="min-w-0 flex-1">
@@ -75,6 +76,7 @@ export default async function SearchPage({ searchParams }: SearchProps) {
                 sort,
               }}
               usingUserLocation={usingUserLocation}
+              areaName={areaName}
             />
           </Suspense>
         </div>

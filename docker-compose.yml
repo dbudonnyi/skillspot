@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: skillspot
+      POSTGRES_PASSWORD: skillspot_dev_pwd
+      POSTGRES_DB: skillspot
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U skillspot -d skillspot"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:3000"
+    environment:
+      DATABASE_URL: postgresql://skillspot:skillspot_dev_pwd@db:5432/skillspot
+      # Set to 1 to load the demo dataset (60+ Warsaw profiles, reviews,
+      # demo accounts) on first start.
+      SEED: "1"
+      NEXT_PUBLIC_APP_URL: http://localhost:8080
+      JWT_SECRET: change…tion
+      # Optional SMTP; without it emails are logged (ethereal fallback)
+      # SMTP_HOST: smtp.example.com
+      # SMTP_PORT: "587"
+      # SMTP_USER: noreply@example.com
+      # SMTP_PASS: secret
+      # EMAIL_FROM: SkillSpot <noreply@example.com>
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

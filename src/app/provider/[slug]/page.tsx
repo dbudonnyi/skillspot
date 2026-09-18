@@ -14,7 +14,11 @@ import {
 import { getProfileBySlug } from "@/lib/search";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { CATEGORY_ICONS, CATEGORY_LABELS, type CategoryValue } from "@/lib/geo";
+import { CATEGORY_ICONS, type CategoryValue } from "@/lib/geo";
+import { getDict } from "@/i18n/server";
+import { tr } from "@/i18n/dictionary";
+import { Translatable } from "@/components/translatable";
+import { ServiceCard } from "@/components/service-card";
 import { Stars } from "@/components/stars";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getProfileBySlug(slug);
   if (!p) return { title: "Not found" };
   return {
-    title: `${p.name} — ${CATEGORY_LABELS[p.category as CategoryValue] ?? p.category}`,
+    title: `${p.name} — ${p.category}`,
     description: p.description.slice(0, 160),
   };
 }
@@ -55,16 +59,19 @@ export default async function ProviderPage({ params }: Props) {
       }))
     : false;
 
+  const dict = await getDict();
+  const t = (k: string, pp?: Record<string, string | number>) => tr(dict, k, pp);
+
   const hours = profile.openingHours as Record<
     string,
     { open: string; close: string } | null
   > | null;
 
   const links = [
-    profile.website && { href: profile.website, icon: Globe, label: "Website" },
-    profile.instagram && { href: profile.instagram, icon: Camera, label: "Instagram" },
-    profile.facebook && { href: profile.facebook, icon: ThumbsUp, label: "Facebook" },
-    profile.booksy && { href: profile.booksy, icon: CalendarCheck, label: "Booksy" },
+    profile.website && { href: profile.website, icon: Globe, label: t("profile.website") },
+    profile.instagram && { href: profile.instagram, icon: Camera, label: t("profile.instagram") },
+    profile.facebook && { href: profile.facebook, icon: ThumbsUp, label: t("profile.facebook") },
+    profile.booksy && { href: profile.booksy, icon: CalendarCheck, label: t("profile.booksy") },
   ].filter(Boolean) as { href: string; icon: typeof Globe; label: string }[];
 
   return (
@@ -93,7 +100,7 @@ export default async function ProviderPage({ params }: Props) {
           <div className="flex flex-wrap items-center gap-2">
             <Badge className="gap-1">
               {CATEGORY_ICONS[profile.category as CategoryValue]}{" "}
-              {CATEGORY_LABELS[profile.category as CategoryValue] ?? profile.category}
+              {t("cat." + profile.category)}
             </Badge>
             {profile.subcategory && <Badge variant="secondary">{profile.subcategory}</Badge>}
             {profile.verified && (
@@ -110,18 +117,21 @@ export default async function ProviderPage({ params }: Props) {
               {profile.district && ` · ${profile.district}, Warsaw`}
             </span>
             <span className="inline-flex items-center gap-1">
-              <Users className="size-4" /> Ages {profile.minAge}
-              {profile.maxAge > 17 ? "+" : `–${profile.maxAge}`}
+              <Users className="size-4" />{" "}
+              {profile.maxAge > 17
+                ? t("profile.ages", { min: profile.minAge })
+                : t("profile.agesTo", { min: profile.minAge, max: profile.maxAge })}
             </span>
             {profile.priceFrom !== null && (
               <span className="font-semibold text-foreground">
-                from {profile.priceFrom} zł <span className="font-normal text-muted-foreground">{profile.priceUnit}</span>
+                {t("profile.from", { price: profile.priceFrom })}{" "}
+                <span className="font-normal text-muted-foreground">{profile.priceUnit}</span>
               </span>
             )}
           </div>
-          <p className="mt-4 whitespace-pre-line text-[15px] leading-relaxed text-muted-foreground">
-            {profile.description}
-          </p>
+          <div className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+            <Translatable text={profile.description} className="text-[15px] leading-relaxed" />
+          </div>
 
           {links.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
@@ -172,7 +182,7 @@ export default async function ProviderPage({ params }: Props) {
       {/* Gallery */}
       {profile.gallery.length > 0 && (
         <section className="mt-8">
-          <h2 className="mb-3 text-xl font-bold">Photos</h2>
+          <h2 className="mb-3 text-xl font-bold">{t("profile.photos")}</h2>
           <Gallery images={[profile.coverImage, ...profile.gallery].filter(Boolean) as string[]} />
         </section>
       )}
@@ -180,24 +190,18 @@ export default async function ProviderPage({ params }: Props) {
       {/* Services */}
       {profile.services.length > 0 && (
         <section className="mt-8">
-          <h2 className="mb-3 text-xl font-bold">Classes & prices</h2>
+          <h2 className="mb-3 text-xl font-bold">{t("profile.classes")}</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {profile.services.map((s) => (
-              <Card key={s.id}>
-                <CardContent className="flex items-start justify-between gap-3 pt-6">
-                  <div>
-                    <h3 className="font-semibold">{s.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{s.description}</p>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      Ages {s.ageMin}–{s.ageMax}
-                    </p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <div className="text-lg font-bold">{s.price} zł</div>
-                    <div className="text-xs text-muted-foreground">{s.priceUnit}</div>
-                  </div>
-                </CardContent>
-              </Card>
+              <ServiceCard
+                key={s.id}
+                title={s.title}
+                description={s.description}
+                price={s.price}
+                priceUnit={s.priceUnit}
+                ageMin={s.ageMin}
+                ageMax={s.ageMax}
+              />
             ))}
           </div>
         </section>
@@ -209,19 +213,19 @@ export default async function ProviderPage({ params }: Props) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Clock className="size-5" /> Opening hours
+                <Clock className="size-5" /> {t("profile.hours")}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-1 text-sm">
                 {["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map((d) => {
                   const h = hours?.[d];
-                  const label = { mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday", sun: "Sunday" }[d];
+                  const label = t("day." + d);
                   return (
                     <li key={d} className="flex justify-between border-b py-1 last:border-0">
                       <span className="text-muted-foreground">{label}</span>
                       <span className="font-medium">
-                        {h ? `${h.open} – ${h.close}` : "Closed"}
+                        {h ? `${h.open} – ${h.close}` : t("profile.closed")}
                       </span>
                     </li>
                   );
@@ -233,7 +237,7 @@ export default async function ProviderPage({ params }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <MapPin className="size-5" /> Where we are
+              <MapPin className="size-5" /> {t("profile.where")}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0 pb-0">
@@ -245,7 +249,7 @@ export default async function ProviderPage({ params }: Props) {
       {/* Reviews */}
       <section className="mt-10 pb-10">
         <h2 className="mb-4 text-xl font-bold">
-          Reviews{" "}
+          {t("profile.reviews")}{" "}
           <span className="text-base font-normal text-muted-foreground">
             ({profile.ratingCount})
           </span>

@@ -14,12 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logoutAction } from "@/actions/auth";
+import { useT } from "@/components/locale-provider";
 
 export function UserMenu({
   user,
 }: {
   user: { name: string; email: string; role: "USER" | "PROVIDER" };
 }) {
+  const { t } = useT();
   const router = useRouter();
   const [, startTransition] = useTransition();
   const initials = user.name
@@ -49,15 +51,15 @@ export function UserMenu({
         {user.role === "USER" ? (
           <>
             <DropdownMenuItem onClick={() => router.push("/favorites")}>
-              <Heart className="mr-2 size-4" /> Favorites
+              <Heart className="mr-2 size-4" /> {t("menu.favorites")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => router.push("/my-requests")}>
-              <Inbox className="mr-2 size-4" /> My requests
+              <Inbox className="mr-2 size-4" /> {t("menu.myRequests")}
             </DropdownMenuItem>
           </>
         ) : (
           <DropdownMenuItem onClick={() => router.push("/dashboard")}>
-            <LayoutDashboard className="mr-2 size-4" /> Provider dashboard
+            <LayoutDashboard className="mr-2 size-4" /> {t("menu.dashboard")}
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
@@ -70,7 +72,7 @@ export function UserMenu({
             })
           }
         >
-          <LogOut className="mr-2 size-4" /> Log out
+          <LogOut className="mr-2 size-4" /> {t("menu.logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

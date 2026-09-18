@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { setRequestStatusAction } from "@/actions/profile";
 import { toast } from "sonner";
+import { useT } from "@/components/locale-provider";
+import { Translatable } from "@/components/translatable";
 
 export type RequestItem = {
   id: string;
@@ -36,13 +38,14 @@ export function RequestList({
   /** In "my requests" view, the first field is the school name, not a person. */
   requesterIsProvider?: boolean;
 }) {
+  const { t, locale } = useT();
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
 
   if (requests.length === 0)
     return (
-      <div className="rounded-xl border bg-card p-10 text-center text-sm text-muted-foreground">
-        No requests yet.
+      <div className="rounded-2xl border bg-card p-10 text-center text-sm text-muted-foreground">
+        {t("requests.empty")}
       </div>
     );
 
@@ -51,7 +54,7 @@ export function RequestList({
     const res = await setRequestStatusAction(id, status);
     setBusy(null);
     if (res.ok) {
-      toast.success(`Request ${status.toLowerCase()}`);
+      toast.success(t("requests." + (status === "ACCEPTED" ? "accept" : "decline")) + " \u2713");
       router.refresh();
     } else toast.error(res.error ?? "Failed");
   }
@@ -64,17 +67,20 @@ export function RequestList({
             <span className="font-semibold">
               {requesterIsProvider ? `🏫 ${r.requesterName}` : r.requesterName}
             </span>
-            <Badge className={badgeCls[r.status]}>{r.status}</Badge>
+            <Badge className={badgeCls[r.status]}>{t("status." + r.status)}</Badge>
             {r.serviceTitle && (
               <Badge variant="secondary">{r.serviceTitle}</Badge>
             )}
             <span className="ml-auto text-xs text-muted-foreground">
-              {new Date(r.createdAt).toLocaleString("en-GB")}
+              {new Date(r.createdAt).toLocaleDateString(
+                locale === "uk" ? "uk-UA" : locale === "pl" ? "pl-PL" : "en-GB",
+                { day: "numeric", month: "short", year: "numeric" },
+              )}
             </span>
           </div>
-          <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">
-            {r.message}
-          </p>
+          <div className="mt-2 text-sm text-muted-foreground">
+            <Translatable text={r.message} className="text-sm leading-relaxed" />
+          </div>
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
             <a
               href={`mailto:${r.contactEmail}`}
@@ -97,7 +103,7 @@ export function RequestList({
                   disabled={busy === r.id}
                   onClick={() => act(r.id, "ACCEPTED")}
                 >
-                  <Check className="mr-1 size-4" /> Accept
+                  <Check className="mr-1 size-4" /> {t("requests.accept")}
                 </Button>
                 <Button
                   size="sm"
@@ -105,7 +111,7 @@ export function RequestList({
                   disabled={busy === r.id}
                   onClick={() => act(r.id, "DECLINED")}
                 >
-                  <X className="mr-1 size-4" /> Decline
+                  <X className="mr-1 size-4" /> {t("requests.decline")}
                 </Button>
               </div>
             )}

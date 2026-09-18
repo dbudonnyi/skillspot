@@ -46,18 +46,21 @@ export async function registerAction(
     businessName: String(formData.get("businessName") || ""),
   });
   if (!parsed.success) {
-    return {
-      ok: false,
-      error:
-        parsed.error.issues[0]?.message === "Invalid input: expected string, received undefined"
-          ? "Please fill all required fields (email, name, password 8+ chars)."
-          : parsed.error.issues[0]?.message || "Invalid data. Check email and password (8+ characters).",
-    };
+    const first = parsed.error.issues[0]?.path[0];
+    const key =
+      first === "email"
+        ? "auth.errEmail"
+        : first === "password"
+          ? "auth.errPass"
+          : first === "name"
+            ? "auth.errName"
+            : "auth.errEmail";
+    return { ok: false, error: key };
   }
   const d = parsed.data;
 
   const existing = await prisma.user.findUnique({ where: { email: d.email } });
-  if (existing) return { ok: false, error: "An account with this email already exists." };
+  if (existing) return { ok: false, error: "auth.errExists" };
 
   const user = await prisma.user.create({
     data: {
@@ -105,12 +108,12 @@ export async function loginAction(
 ): Promise<AuthResult> {
   const email = String(formData.get("email") || "").toLowerCase().trim();
   const password = String(formData.get("password") || "");
-  if (!email || !password) return { ok: false, error: "Email and password are required." };
+  if (!email || !password) return { ok: false, error: "auth.errCreds" };
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await verifyPassword(password, user.passwordHash))) {
     // Same error for both cases — don't leak which emails exist.
-    return { ok: false, error: "Invalid email or password." };
+    return { ok: false, error: "auth.errCreds" };
   }
 
   await createSessionCookie({

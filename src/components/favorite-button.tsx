@@ -6,6 +6,7 @@ import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toggleFavoriteAction } from "@/actions/profile";
 import { toast } from "sonner";
+import { useT } from "@/components/locale-provider";
 
 export function FavoriteButton({
   profileId,
@@ -16,7 +17,9 @@ export function FavoriteButton({
   initialFavorited: boolean;
   signedIn: boolean;
 }) {
+  const { t } = useT();
   const [fav, setFav] = useState(initialFavorited);
+  const [burst, setBurst] = useState(0);
   const router = useRouter();
 
   return (
@@ -26,22 +29,25 @@ export function FavoriteButton({
       className="w-full"
       onClick={async () => {
         if (!signedIn) {
-          toast.error("Please log in to save favorites.");
+          toast.error(t("fav.login"));
           router.push("/login");
           return;
         }
         const res = await toggleFavoriteAction(profileId);
         if (res.ok) {
           setFav((v) => !v);
-          toast.success(fav ? "Removed from favorites" : "Saved to favorites ❤️");
+          setBurst((b) => b + 1);
+          toast.success(fav ? t("fav.removedToast") : t("fav.savedToast"));
           router.refresh();
         } else {
           toast.error(res.error);
         }
       }}
     >
-      <Heart className={`mr-2 size-4 ${fav ? "fill-white" : ""}`} />
-      {fav ? "Saved to favorites" : "Add to favorites"}
+      <span key={burst} className="inline-flex animate-[heart-pop_0.35s_ease]">
+        <Heart className={`mr-2 size-4 ${fav ? "fill-white" : ""}`} />
+      </span>
+      {fav ? t("fav.savedShort") : t("fav.add")}
     </Button>
   );
 }

@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { Phone, Mail, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useT } from "@/components/locale-provider";
 
 export function ContactReveal({
   phone,
@@ -15,13 +17,14 @@ export function ContactReveal({
   email: string | null;
   signedIn: boolean;
 }) {
+  const { t } = useT();
   const [revealed, setRevealed] = useState(false);
   const router = useRouter();
 
   if (!phone && !email)
     return (
       <p className="text-center text-sm text-muted-foreground">
-        No direct contacts published — use the booking request instead.
+        {t("contact.none")}
       </p>
     );
 
@@ -33,24 +36,29 @@ export function ContactReveal({
         className="w-full"
         onClick={() => {
           if (!signedIn) {
-            toast.error("Log in to view contact details.");
+            toast.error(t("contact.login"));
             router.push("/login");
             return;
           }
           setRevealed(true);
         }}
       >
-        <Eye className="mr-2 size-4" /> Show contact
+        <Eye className="mr-2 size-4" /> {t("contact.show")}
       </Button>
     );
   }
 
   return (
-    <div className="space-y-2">
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-2"
+      data-testid="contacts-revealed"
+    >
       {phone && (
         <a
           href={`tel:${phone.replace(/[^+\d]/g, "")}`}
-          className="flex items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-sm font-medium hover:bg-muted"
+          className="flex items-center gap-2 rounded-xl border bg-muted/40 px-3 py-2 text-sm font-medium hover:bg-muted"
         >
           <Phone className="size-4 text-primary" /> {phone}
         </a>
@@ -58,11 +66,11 @@ export function ContactReveal({
       {email && (
         <a
           href={`mailto:${email}`}
-          className="flex items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-sm font-medium hover:bg-muted"
+          className="flex items-center gap-2 rounded-xl border bg-muted/40 px-3 py-2 text-sm font-medium hover:bg-muted"
         >
           <Mail className="size-4 text-primary" /> {email}
         </a>
       )}
-    </div>
+    </motion.div>
   );
 }
